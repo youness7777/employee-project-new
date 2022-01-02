@@ -17,9 +17,14 @@ public class EmployeeController {
     // get all employees
     @GetMapping("/employees")
     public List<employee> getAllEmployees(){
+
         return employeeRepository.findAll();
     }
 
-
+  //create employe
+    @PostMapping("/employees")
+    public employee createEmployee (@RequestBody employee emp){
+        return employeeRepository.save(emp);
+    }
 
 }
