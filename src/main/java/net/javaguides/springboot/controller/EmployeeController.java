@@ -2,7 +2,7 @@ package net.javaguides.springboot.controller;
 
 
 import net.javaguides.springboot.exeption.ResourceNotfoundexeption;
-import net.javaguides.springboot.model.employee;
+import net.javaguides.springboot.model.Employee;
 import net.javaguides.springboot.repository.EmployeeRepository;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,43 +20,48 @@ public class EmployeeController {
     private EmployeeRepository employeeRepository;
 
     // get all employees
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/employees")
-    public List<employee> getAllEmployees(){
+    public List<Employee> getAllEmployees(){
 
         return employeeRepository.findAll();
     }
 
   //create employe
-    @PostMapping("/createemp")
-    public employee createEmployee (@RequestBody employee emp){
-        return employeeRepository.save(emp);
+  @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/employees")
+    public Employee createEmployee (@RequestBody Employee employee){
+        return employeeRepository.save(employee);
     }
 
     //getemployeebyid
-    @GetMapping("/employee/{id}")
-    public ResponseEntity<employee> getEmployeebyid(@PathVariable long id){
-        employee empl=employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("employe not exist with id:"+id));
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/employees/{id}")
+    public ResponseEntity<Employee> getEmployeebyid(@PathVariable long id){
+        Employee empl=employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("employe not exist with id:"+id));
       return  ResponseEntity.ok(empl);
     }
 
     //update employe
+    @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("/employees/{id}")
-    public ResponseEntity<employee> updateEmployee(@PathVariable Long id, @RequestBody employee employeeDetails){
-        employee employee = employeeRepository.findById(id)
+    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee employeeDetails){
+        Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id :" + id));
 
         employee.setFirstName(employeeDetails.getFirstName());
         employee.setLastName(employeeDetails.getLastName());
         employee.setEmailId(employeeDetails.getEmailId());
 
-        employee updatedEmployee = employeeRepository.save(employee);
+        Employee updatedEmployee = employeeRepository.save(employee);
         return ResponseEntity.ok(updatedEmployee);
     }
 
     // delete employee rest api
+    @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("/employees/{id}")
     public ResponseEntity<Map<String, Boolean>> deleteEmployee(@PathVariable Long id){
-        employee employeet = employeeRepository.findById(id)
+        Employee employeet = employeeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id :" + id));
 
         employeeRepository.delete(employeet);
